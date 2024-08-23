@@ -3,21 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shovsepy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cnahle <cnahle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/26 17:47:09 by shovsepy          #+#    #+#             */
-/*   Updated: 2021/06/30 17:22:47 by shovsepy         ###   ########.fr       */
+/*   Created: 2024/06/18 16:00:52 by cnahle            #+#    #+#             */
+/*   Updated: 2024/06/18 17:36:53 by cnahle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <unistd.h>
 
-static int	ft_abs(int nbr)
+int	ft_abs(int nbr)
 {
 	if (nbr < 0)
+	{
 		return (-nbr);
-	else
-		return (nbr);
+	}
+	return (nbr);
 }
 
 void	ft_putnbr_fd(int n, int fd)

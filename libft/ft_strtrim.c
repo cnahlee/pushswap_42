@@ -3,47 +3,75 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shovsepy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cnahle <cnahle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/28 21:00:51 by shovsepy          #+#    #+#             */
-/*   Updated: 2021/06/30 17:29:51 by shovsepy         ###   ########.fr       */
+/*   Created: 2024/06/18 15:42:10 by cnahle            #+#    #+#             */
+/*   Updated: 2024/06/18 16:55:50 by cnahle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	isinset(int c, const char *set)
+static size_t	char_check(char const *str, char const c)
 {
-	char	character;
+	size_t	i;
 
-	character = (char)c;
-	while (*set)
+	if (!str)
+		return (0);
+	i = 0;
+	while (*(str + i))
 	{
-		if (*set++ == character)
+		if (*(str + i) == c)
 			return (1);
+		i++;
 	}
 	return (0);
 }
 
-char	*ft_strtrim(const char *str, const char *set)
+static size_t	str_len(char const *str)
 {
-	char	*new_str;
-	int		start;
-	int		end;
-	int		i;
+	size_t	i;
 
+	i = 0;
+	while (*(str + i))
+		i++;
+	return (i);
+}
+
+static char	*str_new(size_t n)
+{
+	char	*str;
+
+	str = (char *)malloc(sizeof(char) * (n + 1));
+	if (!str)
+		return (NULL);
+	return (str);
+}
+
+char	*ft_strtrim(char const *s1, char const *set)
+{
+	char	*trim;
+	size_t	start;
+	size_t	end;
+	size_t	i;
+
+	if (!s1 || !set)
+		return (NULL);
 	start = 0;
-	end = ft_strlen(str);
-	while (str[start] && isinset(str[start], set))
+	while (*(s1 + start) && char_check(set, *(s1 + start)))
 		start++;
-	while (end > start && isinset(str[end - 1], set))
+	end = str_len(s1);
+	while (end > start && char_check(set, *(s1 + (end - 1))))
 		end--;
-	new_str = malloc(end - start + 1);
-	if (!new_str)
+	trim = str_new(end - start);
+	if (!trim)
 		return (NULL);
 	i = 0;
-	while (start < end)
-		new_str[i++] = str[start++];
-	new_str[i] = '\0';
-	return (new_str);
+	while ((start + i) < end)
+	{
+		*(trim + i) = *(s1 + (start + i));
+		i++;
+	}
+	*(trim + i) = '\0';
+	return (trim);
 }

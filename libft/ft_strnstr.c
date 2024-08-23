@@ -3,38 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shovsepy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cnahle <cnahle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/28 20:59:20 by shovsepy          #+#    #+#             */
-/*   Updated: 2021/06/30 17:28:56 by shovsepy         ###   ########.fr       */
+/*   Created: 2024/06/12 16:50:57 by cnahle            #+#    #+#             */
+/*   Updated: 2024/06/14 16:45:52 by cnahle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strnstr(const char *str,
-	const char *sub_str, size_t len)
+char	*ft_strnstr(const char *str, const char *to_find, size_t len)
 {
 	size_t	i;
 	size_t	j;
 
+	if (!*to_find)
+		return ((char *)str);
 	i = 0;
-	j = 0;
-	if (!sub_str[j])
-		return ((char *)(str));
-	while (str[i] && sub_str[j] && len)
+	while (str[i] && (size_t)i < len)
 	{
-		if (str[i] == sub_str[j])
-			j++;
-		else if (j)
+		if (str[i] == to_find[0])
 		{
 			j = 0;
-			continue ;
+			while (str[i + j] == to_find[j] && i + j < len)
+			{
+				if (to_find[j + 1] == '\0')
+					return ((char *)&str[i]);
+				j++;
+			}
 		}
 		i++;
-		len--;
 	}
-	if (!sub_str[j])
-		return ((char *)(str + i - j));
 	return (0);
 }

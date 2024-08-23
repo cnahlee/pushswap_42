@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shovsepy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cnahle <cnahle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/28 20:41:47 by shovsepy          #+#    #+#             */
-/*   Updated: 2021/02/02 18:45:47 by shovsepy         ###   ########.fr       */
+/*   Created: 2024/06/11 14:19:35 by cnahle            #+#    #+#             */
+/*   Updated: 2024/06/14 16:15:10 by cnahle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,18 @@
 
 void	*ft_memmove(void *dest, const void *src, size_t len)
 {
-	size_t			i;
-	char			*dest_val;
-	char			*src_val;
+	size_t				i;
+	unsigned char		*ptr;
+	const unsigned char	*ptr2;
 
-	dest_val = (char *)dest;
-	src_val = (char *)src;
-	if (len == 0)
-		return (dest);
-	if (src < dest)
-	{
-		while (len-- > 0)
-		{
-			dest_val[len] = src_val[len];
-		}
-	}
+	ptr = (unsigned char *)dest;
+	ptr2 = (unsigned char *)src;
+	i = 0;
+	if (ptr2 < ptr)
+		while (++i <= len)
+			ptr[len - i] = ptr2[len - i];
 	else
-	{
-		i = 0;
-		while (i < len)
-		{
-			dest_val[i] = src_val[i];
-			i++;
-		}
-	}
+		while (len-- > 0)
+			*(ptr++) = *(ptr2++);
 	return (dest);
 }

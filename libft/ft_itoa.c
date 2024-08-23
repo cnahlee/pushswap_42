@@ -3,52 +3,66 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shovsepy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cnahle <cnahle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/28 20:24:39 by shovsepy          #+#    #+#             */
-/*   Updated: 2021/06/30 17:13:00 by shovsepy         ###   ########.fr       */
+/*   Created: 2024/06/19 18:43:24 by cnahle            #+#    #+#             */
+/*   Updated: 2024/06/19 19:23:01 by cnahle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	ft_dc(int n)
+int	cgetsize(int n)
 {
-	int	i;
+	int	count;
 
-	i = 0;
-	if (n < 0 || n == 0)
-		i++;
-	while (n)
+	count = 0;
+	if (n < 0)
+		n *= -1;
+	while (n != 0)
 	{
-		n /= 10;
-		i++;
+		n = n / 10;
+		count ++;
 	}
-	return (i + 1);
+	return (count);
 }
 
-char	*ft_itoa(int n)
+char	*ft_strnew(size_t size)
 {
-	int				n1;
-	unsigned int	n2;
-	int				i;
-	char			*d;
+	char	*str;
 
-	i = ft_dc(n);
-	n1 = 0;
-	n2 = n;
-	d = malloc(i);
-	d[--i] = '\0';
+	str = (char *)malloc(sizeof(*str) * (size + 1));
+	if (!str)
+	{
+		return (NULL);
+	}
+	ft_bzero(str, size + 1);
+	return (str);
+}
+
+char	*ft_itoa(int num)
+{
+	char		*dst;
+	int			count;
+	int			i;
+	long int	n;
+
+	n = num;
+	count = cgetsize(n);
+	i = 0;
+	if (n < 0 || count == 0)
+		count++;
+	dst = ft_strnew(count);
 	if (n < 0)
 	{
-		n2 = n * -1;
-		d[n1] = '-';
-		n1++;
+		n *= -1;
+		dst[0] = '-';
+		i++;
 	}
-	while (n1 < i--)
+	while (count > i)
 	{
-		d[i] = n2 % 10 + '0';
-		n2 /= 10;
+		dst[--count] = (n % 10) + '0';
+		n /= 10;
 	}
-	return (d);
+	return (dst);
 }

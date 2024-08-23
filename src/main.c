@@ -3,39 +3,46 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shovsepy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cnahle <cnahle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/09 18:33:22 by shovsepy          #+#    #+#             */
-/*   Updated: 2021/07/09 18:33:23 by shovsepy         ###   ########.fr       */
+/*   Created: 2024/08/23 13:31:37 by cnahle            #+#    #+#             */
+/*   Updated: 2024/08/23 13:31:37 by cnahle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+
 #include "push_swap.h"
 
-static void	initStack(t_list **stack, int argc, char **argv)
+static void initStack(t_list **stack, int argc, char **argv)
 {
-	t_list	*new;
-	char	**args;
-	int		i;
+    t_list  *new;
+    char    **args;
+    int     i;
 
-	i = 0;
-	if (argc == 2)
-		args = ft_split(argv[1], ' ');
-	else
-	{
-		i = 1;
-		args = argv;
-	}
-	while (args[i])
-	{
-		new = ft_lstnew(ft_atoi(args[i]));
-		ft_lstadd_back(stack, new);
-		i++;
-	}
-	index_stack(stack);
-	if (argc == 2)
-		ft_free(args);
+    i = 0;
+    if (argc == 2)
+        args = ft_split(argv[1], ' ');
+    else
+    {
+        i = 1;
+        args = argv;
+    }
+    while (args[i])
+    {
+        new = ft_lstnew(ft_atoi(args[i]));
+        ft_lstadd_back(stack, new);
+        i++;
+    }
+    index_stack(stack);
+    if (argc == 2)
+    {
+        i = 0;
+        while (args[i])
+            free(args[i++]);  // Free each string in the split array
+        free(args);           // Free the array itself
+    }
 }
+
 
 static void	sort_stack(t_list **stack_a, t_list **stack_b)
 {

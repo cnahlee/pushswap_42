@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_args.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shovsepy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cnahle <cnahle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/09 18:33:22 by shovsepy          #+#    #+#             */
-/*   Updated: 2021/07/09 18:33:23 by shovsepy         ###   ########.fr       */
+/*   Created: 2024/08/23 13:32:06 by cnahle            #+#    #+#             */
+/*   Updated: 2024/08/23 13:32:06 by cnahle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,27 +44,48 @@ void	ft_check_args(int argc, char **argv)
 {
 	int		i;
 	long	tmp;
-	char	**args;	
+	char	**args;
 
 	i = 0;
 	if (argc == 2)
 		args = ft_split(argv[1], ' ');
 	else
 	{
-		i = 1;
 		args = argv;
+		i = 1;
 	}
 	while (args[i])
 	{
 		tmp = ft_atoi(args[i]);
-		if (!ft_isnum(args[i]))
+		if (!ft_isnum(args[i]) || ft_contains(tmp, args, i) || tmp < -2147483648 || tmp > 2147483647)
+		{
+			if (argc == 2)
+			{
+				int j = 0;
+				while (args[j])
+					free(args[j++]);
+				free(args); 
+			}
 			ft_error("Error");
-		if (ft_contains(tmp, args, i))
+		}
+		if ((args[i][0] == '+' || args[i][0] == '-') && !ft_isnum(args[i] + 1))
+		{
+			if (argc == 2)
+			{
+				int j = 0;
+				while (args[j])
+					free(args[j++]);
+				free(args); 
+			}
 			ft_error("Error");
-		if (tmp < -2147483648 || tmp > 2147483647)
-			ft_error("Error");
+		}
 		i++;
 	}
 	if (argc == 2)
-		ft_free(args);
+	{
+		i = 0;
+		while (args[i])
+			free(args[i++]);  // Free each string in the split array
+		free(args);           // Free the array itself
+	}
 }
