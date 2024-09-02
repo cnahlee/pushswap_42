@@ -10,8 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
-
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 
@@ -30,10 +28,11 @@ t_list	*ft_lstnew(int value);
 t_list	*ft_lstlast(t_list *head);
 void	ft_lstadd_front(t_list **stack, t_list *new);
 void	ft_lstadd_back(t_list **stack, t_list *new);
-void	printList(t_list *head);
+void	printlist(t_list *head);
 int		ft_lstsize(t_list *head);
 
 void	ft_error(char *msg);
+void	process_args(int argc, char **argv);
 void	ft_check_args(int argc, char **argv);
 int		is_sorted(t_list **stack);
 int		get_distance(t_list **stack, int index);
@@ -46,12 +45,15 @@ void	radix_sort(t_list **stack_a, t_list **stack_b);
 void	simple_sort(t_list **stack_a, t_list **stack_b);
 void	index_stack(t_list **stack);
 void	sort_5(t_list **stack_a, t_list **stack_b);
+int		get_min(t_list **stack, int val);
+void	sort_3(t_list **stack_a);
+void	sort_4(t_list **stack_a, t_list **stack_b);
 
 // Instruction functions
 int		swap(t_list **stack);
 int		push(t_list **stack_to, t_list **stack_from);
 int		rotate(t_list **stack);
-int		reverseRotate(t_list **stack);
+int		reverserotate(t_list **stack);
 
 int		sa(t_list **stack_a);
 int		sb(t_list **stack_b);
@@ -66,4 +68,3 @@ int		rrb(t_list **stack_b);
 int		rrr(t_list **stack_a, t_list **stack_b);
 
 #endif
-

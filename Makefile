@@ -1,45 +1,46 @@
-# ************************************************************************** #
-#                                                                            #
-#                                                        :::      ::::::::   #
-#   Makefile                                           :+:      :+:    :+:   #
-#                                                    +:+ +:+         +:+     #
-#   By: shovsepy <marvin@42.fr>                    +#+  +:+       +#+        #
-#                                                +#+#+#+#+#+   +#+           #
-#   Created: 2021/07/09 18:33:22 by shovsepy          #+#    #+#             #
-#   Updated: 2021/07/09 18:33:23 by shovsepy         ###   ########.fr       #
-#                                                                            #
-# ************************************************************************** #
+# Variables for colors
+RESET = \033[0m
+BOLD = \033[1m
+RED = \033[31m
+GREEN = \033[32m
+YELLOW = \033[33m
+BLUE = \033[34m
 
 NAME = push_swap
-CHECK = checker
-
-SRCS =  $(wildcard src/*.c utils/*.c)
-CHECK_SRCS = $(wildcard utils/*.c) src/instructions.c
-
-OBJS = ${SRCS:.c=.o}
-CHECK_OBJS = ${CHECK_SRCS:.c=.o}
-
+SOURCES = $(wildcard *.c)
+OBJECTS = $(SOURCES:.c=.o)
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -Iincludes
+CFLAGS = -Wall -Wextra -Werror -g
+AR = ar
+ARFLAGS = -r
+LIBDIR = ./libft
+LIBS = -lft
 
-RM = rm -rf
+# Targets
+all: $(NAME)
 
-all: ${NAME} ${CHECK}
-${NAME}: ${OBJS}
-	@${MAKE} -C ./libft
-	@${CC} ${CFLAGS} ${OBJS} ./libft/libft.a -o ${NAME}
+%.o: %.c
+	@echo "$(BLUE)Compiling $<...$(RESET)"
+	@$(CC) -c $(CFLAGS) $< -o $@
 
-${CHECK}: ${CHECK_OBJS} 
-	@${CC} ${CFLAGS} ${CHECK_OBJS} ./libft/libft.a -o ${CHECK}
+$(NAME): $(OBJECTS)
+	@echo "$(YELLOW)Building the library...$(RESET)"
+	@make -C $(LIBDIR)
+	@echo "$(GREEN)Linking $(NAME)...$(RESET)"
+	@$(CC) $(CFLAGS) $(OBJECTS) -o $(NAME) -L$(LIBDIR) $(LIBS)
+	@echo "$(GREEN)Build complete!$(RESET)"
 
-clean: 
-	@${MAKE} -C ./libft fclean
-	@${RM} ${OBJS}
-	@${RM} ${CHECK_OBJS}
+clean:
+	@echo "$(RED)Cleaning object files...$(RESET)"
+	@rm -f $(OBJECTS)
+	@cd $(LIBDIR) && $(MAKE) clean
+	@echo "$(RED)Clean complete!$(RESET)"
 
 fclean: clean
-	@${RM} ${NAME}
-	@${RM} ${CHECK}
+	@echo "$(RED)Removing executable $(NAME)...$(RESET)"
+	@rm -f $(NAME)
+	@cd $(LIBDIR) && $(MAKE) fclean
+	@echo "$(RED)Remove complete!$(RESET)"
 
 re: fclean all
 

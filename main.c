@@ -10,39 +10,42 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "push_swap.h"
 
-static void initStack(t_list **stack, int argc, char **argv)
+void	free_argss(char **args)
 {
-    t_list  *new;
-    char    **args;
-    int     i;
+	int	i;
 
-    i = 0;
-    if (argc == 2)
-        args = ft_split(argv[1], ' ');
-    else
-    {
-        i = 1;
-        args = argv;
-    }
-    while (args[i])
-    {
-        new = ft_lstnew(ft_atoi(args[i]));
-        ft_lstadd_back(stack, new);
-        i++;
-    }
-    index_stack(stack);
-    if (argc == 2)
-    {
-        i = 0;
-        while (args[i])
-            free(args[i++]);  // Free each string in the split array
-        free(args);           // Free the array itself
-    }
+	i = 0;
+	while (args[i])
+		free(args[i++]);
+	free(args);
 }
 
+void	initstack(t_list **stack, int argc, char **argv)
+{
+	t_list	*new;
+	char	**args;
+	int		i;
+
+	i = 0;
+	if (argc == 2)
+		args = ft_split(argv[1], ' ');
+	else
+	{
+		i = 1;
+		args = argv;
+	}
+	while (args[i])
+	{
+		new = ft_lstnew(ft_atoi(args[i]));
+		ft_lstadd_back(stack, new);
+		i++;
+	}
+	index_stack(stack);
+	if (argc == 2)
+		free_argss(args);
+}
 
 static void	sort_stack(t_list **stack_a, t_list **stack_b)
 {
@@ -64,7 +67,7 @@ int	main(int argc, char **argv)
 	stack_b = (t_list **)malloc(sizeof(t_list));
 	*stack_a = NULL;
 	*stack_b = NULL;
-	initStack(stack_a, argc, argv);
+	initstack(stack_a, argc, argv);
 	if (is_sorted(stack_a))
 	{
 		free_stack(stack_a);
@@ -76,4 +79,3 @@ int	main(int argc, char **argv)
 	free_stack(stack_b);
 	return (0);
 }
-

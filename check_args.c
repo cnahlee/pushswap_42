@@ -29,7 +29,7 @@ static int	ft_isnum(char *num)
 	int	i;
 
 	i = 0;
-	if (num[0] == '-')
+	if (num[0] == '-' || num[0] == '+')
 		i++;
 	while (num[i])
 	{
@@ -40,12 +40,45 @@ static int	ft_isnum(char *num)
 	return (1);
 }
 
-void	ft_check_args(int argc, char **argv)
+void	free_args(char **args)
 {
-	int		i;
-	long	tmp;
-	char	**args;
+	int	i;
 
+	i = 0;
+	while (args[i])
+		free(args[i++]);
+	free(args);
+}
+
+void	check_argument(char *arg, char **args, int index, int flag)
+{
+	long	tmp;
+
+	(void)args;
+	(void)index;
+	tmp = ft_atoi(arg);
+	if (!ft_isnum(arg) || ft_contains(tmp, args, index)
+		|| tmp < -2147483648 || tmp > 2147483647)
+	{
+		if (!flag)
+			free_args(args);
+		ft_error("Error");
+	}
+	if ((arg[0] == '+' || arg[0] == '-') && !ft_isnum(arg + 1))
+	{
+		if (!flag)
+			free_args(args);
+		ft_error("Error");
+	}
+}
+
+void	process_args(int argc, char **argv)
+{
+	char	**args;
+	int		i;
+	int		flag;
+
+	flag = 0;
 	i = 0;
 	if (argc == 2)
 		args = ft_split(argv[1], ' ');
@@ -53,39 +86,13 @@ void	ft_check_args(int argc, char **argv)
 	{
 		args = argv;
 		i = 1;
+		flag = 1;
 	}
 	while (args[i])
 	{
-		tmp = ft_atoi(args[i]);
-		if (!ft_isnum(args[i]) || ft_contains(tmp, args, i) || tmp < -2147483648 || tmp > 2147483647)
-		{
-			if (argc == 2)
-			{
-				int j = 0;
-				while (args[j])
-					free(args[j++]);
-				free(args); 
-			}
-			ft_error("Error");
-		}
-		if ((args[i][0] == '+' || args[i][0] == '-') && !ft_isnum(args[i] + 1))
-		{
-			if (argc == 2)
-			{
-				int j = 0;
-				while (args[j])
-					free(args[j++]);
-				free(args); 
-			}
-			ft_error("Error");
-		}
+		check_argument(args[i], args, i, flag);
 		i++;
 	}
 	if (argc == 2)
-	{
-		i = 0;
-		while (args[i])
-			free(args[i++]);  // Free each string in the split array
-		free(args);           // Free the array itself
-	}
+		free_args(args);
 }
